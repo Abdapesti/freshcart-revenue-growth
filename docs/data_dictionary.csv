@@ -1,0 +1,69 @@
+table,column,type,key,nullable,description
+customers,customer_id,string,PK,no,Synthetic customer identifier
+customers,signup_at,timestamp,,no,Account creation timestamp
+customers,city,string,,no,Customer home city
+customers,acquisition_channel,string,,no,First-touch acquisition channel
+customers,income_segment,string,,no,Synthetic behavioral segment; not sensitive personal data
+customers,is_subscription_member,integer,,no,1 when enrolled in delivery subscription
+hubs,hub_id,string,PK,no,Fulfillment hub identifier
+hubs,city,string,,no,Operating city
+hubs,hub_name,string,,no,Synthetic hub label
+hubs,capacity_orders_day,integer,,no,Nominal daily order capacity
+hubs,opened_date,date,,no,Hub opening date
+products,product_id,string,PK,no,Product identifier
+products,category,string,,no,Product category
+products,product_name,string,,no,Synthetic product name
+products,unit_cost,decimal,,no,Synthetic procurement cost in IDR
+products,list_price,decimal,,no,Synthetic reference price in IDR
+products,is_perishable,integer,,no,1 for perishable category
+orders,order_id,string,PK,no,Order identifier
+orders,customer_id,string,FK,no,References customers
+orders,hub_id,string,FK,no,References hubs
+orders,order_at,timestamp,,no,Order submitted timestamp
+orders,order_status,string,,no,completed or cancelled
+orders,cancel_reason,string,,yes,Cancellation reason when cancelled
+orders,item_subtotal,decimal,,no,Sum of quantity times unit price
+orders,discount_amount,decimal,,no,Applied order discount in IDR
+orders,delivery_fee,decimal,,no,Delivery fee in IDR
+orders,service_fee,decimal,,no,Service fee in IDR
+orders,gross_amount,decimal,,no,Subtotal minus discount plus fees
+orders,order_channel,string,,no,android ios or web
+order_items,order_item_id,string,PK,no,Order line identifier
+order_items,order_id,string,FK,no,References orders
+order_items,product_id,string,FK,no,References products
+order_items,quantity,integer,,no,Units ordered
+order_items,unit_price,decimal,,no,Transaction unit price in IDR
+order_items,unit_cost,decimal,,no,Synthetic unit cost at transaction time
+order_items,is_substituted,integer,,no,1 when item was substituted
+payments,payment_id,string,PK,no,Payment identifier
+payments,order_id,string,FK,no,One payment record per order
+payments,payment_method,string,,no,Payment method
+payments,payment_status,string,,no,captured or voided
+payments,paid_amount,decimal,,no,Captured amount in IDR
+payments,refund_amount,decimal,,no,Refunded amount in IDR
+payments,paid_at,timestamp,,yes,Payment timestamp when captured
+deliveries,delivery_id,string,PK,no,Delivery identifier
+deliveries,order_id,string,FK,no,One delivery per completed order
+deliveries,rider_id,string,,no,Synthetic rider identifier
+deliveries,accepted_at,timestamp,,no,Rider acceptance timestamp
+deliveries,promised_at,timestamp,,no,Promised delivery timestamp
+deliveries,delivered_at,timestamp,,no,Actual delivery timestamp
+deliveries,distance_km,decimal,,no,Synthetic route distance
+deliveries,weather_flag,integer,,no,1 when adverse weather simulated
+deliveries,delivery_minutes,integer,,no,Minutes from order to delivery
+deliveries,is_late,integer,,no,1 when actual delivery exceeds promise
+support_tickets,ticket_id,string,PK,no,Support ticket identifier
+support_tickets,customer_id,string,FK,no,References customers
+support_tickets,order_id,string,FK,no,References orders
+support_tickets,created_at,timestamp,,no,Ticket creation timestamp
+support_tickets,issue_type,string,,no,Primary issue category
+support_tickets,channel,string,,no,Support channel
+support_tickets,resolution_hours,decimal,,no,Hours to resolution
+support_tickets,csat_score,integer,,no,Synthetic score from 1 to 5
+marketing_exposures,exposure_id,string,PK,no,Campaign exposure identifier
+marketing_exposures,customer_id,string,FK,no,References customers
+marketing_exposures,campaign_name,string,,no,Synthetic campaign label
+marketing_exposures,sent_at,timestamp,,no,Exposure timestamp
+marketing_exposures,channel,string,,no,Outbound channel
+marketing_exposures,was_clicked,integer,,no,1 when simulated click occurred
+marketing_exposures,assigned_variant,string,,no,Control or offer assignment
